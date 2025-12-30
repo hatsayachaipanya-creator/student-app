@@ -1,101 +1,126 @@
+<script setup lang="ts">
+import { LayoutDashboard, PlusCircle, Tags, Menu, X, Wallet } from 'lucide-vue-next'
+
+const route = useRoute()
+const isSidebarOpen = ref(false)
+
+const menuItems = [
+  { 
+    path: '/', 
+    name: 'แดชบอร์ด', 
+    icon: LayoutDashboard 
+  },
+  { 
+    path: '/transactions', 
+    name: 'บันทึกรายการ', 
+    icon: PlusCircle 
+  },
+  { 
+    path: '/categories', 
+    name: 'หมวดหมู่', 
+    icon: Tags 
+  },
+]
+
+const isActive = (path: string) => route.path === path
+
+const closeSidebar = () => {
+  isSidebarOpen.value = false
+}
+</script>
+
 <template>
-  <div class="drawer lg:drawer-open">
-    <input id="mobile-drawer" type="checkbox" class="drawer-toggle" v-model="mobileMenuOpen" />
-    
-    <!-- Main Content -->
-    <div class="drawer-content flex flex-col min-h-screen bg-base-200">
-      <!-- Mobile Header -->
-      <header class="lg:hidden fixed top-0 left-0 right-0 z-50 navbar bg-base-100 shadow-sm">
-        <div class="flex-1">
+  <div class="min-h-screen bg-gradient-to-b from-emerald-50 to-white" data-theme="moneytracker">
+    <!-- Mobile Header -->
+    <header class="lg:hidden bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg sticky top-0 z-40">
+      <div class="flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-3">
+          <button 
+            class="btn btn-ghost btn-sm btn-square text-white"
+            @click="isSidebarOpen = true"
+          >
+            <Menu class="w-6 h-6" />
+          </button>
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Recycle class="w-4 h-4 text-primary-content" />
-            </div>
-            <span class="font-semibold">Waste Bank</span>
+            <Wallet class="w-5 h-5" />
+            <span class="font-bold">Money Tracker</span>
           </div>
         </div>
-        <div class="flex-none">
-          <label for="mobile-drawer" class="btn btn-ghost btn-square drawer-button lg:hidden">
-            <Menu class="w-5 h-5" />
-          </label>
-        </div>
-      </header>
+      </div>
+    </header>
 
-      <!-- Main Content Area -->
-      <main class="pt-16 lg:pt-0 flex-1">
-        <div class="p-4 lg:p-8 max-w-7xl mx-auto">
-          <slot />
-        </div>
-      </main>
+    <div class="flex">
+      <!-- Mobile Backdrop -->
+      <div 
+        v-if="isSidebarOpen"
+        class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+        @click="closeSidebar"
+      />
 
-      <!-- Toast Container -->
-      <Toast />
-    </div>
-
-    <!-- Drawer Sidebar -->
-    <div class="drawer-side z-50">
-      <label for="mobile-drawer" class="drawer-overlay"></label>
-      <aside class="bg-base-100 w-64 min-h-full flex flex-col border-r border-base-300">
-        <!-- Logo -->
-        <div class="p-6">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <Recycle class="w-5 h-5 text-primary-content" />
+      <!-- Sidebar -->
+      <aside 
+        class="fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-base-200 shadow-lg z-50 transform transition-transform duration-300 lg:transform-none"
+        :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+      >
+        <!-- Sidebar Header -->
+        <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white p-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="bg-white/20 rounded-lg p-2">
+                <Wallet class="w-6 h-6" />
+              </div>
+              <div>
+                <h1 class="font-bold text-lg">Money Tracker</h1>
+                <p class="text-emerald-100 text-xs">รายรับ-รายจ่าย</p>
+              </div>
             </div>
-            <div>
-              <h1 class="font-bold">Waste Bank</h1>
-              <p class="text-base-content/50 text-xs">ธนาคารขยะ</p>
-            </div>
+            <button 
+              class="btn btn-ghost btn-sm btn-square text-white lg:hidden"
+              @click="closeSidebar"
+            >
+              <X class="w-5 h-5" />
+            </button>
           </div>
         </div>
 
         <!-- Navigation -->
-        <ul class="menu flex-1 w-full px-4 gap-1">
-          <li v-for="item in navItems" :key="item.path" class="w-full">
-            <NuxtLink 
-              :to="item.path"
-              @click="mobileMenuOpen = false"
-              :class="[
-                'flex items-center gap-3 w-full',
-                isActive(item.path) ? 'active bg-primary text-primary-content' : ''
-              ]"
-            >
-              <component :is="item.icon" class="w-5 h-5" />
-              {{ item.name }}
-            </NuxtLink>
-          </li>
-        </ul>
+        <nav class="p-4 space-y-2">
+          <NuxtLink
+            v-for="item in menuItems"
+            :key="item.path"
+            :to="item.path"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200"
+            :class="[
+              isActive(item.path) 
+                ? 'bg-emerald-500 text-white shadow-md' 
+                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-600'
+            ]"
+            @click="closeSidebar"
+          >
+            <component 
+              :is="item.icon" 
+              class="w-5 h-5"
+              :class="isActive(item.path) ? 'text-white' : ''"
+            />
+            <span class="font-medium">{{ item.name }}</span>
+          </NuxtLink>
+        </nav>
 
         <!-- Footer -->
-        <div class="p-4">
-          <div class="text-xs text-base-content/40 px-4">Version 1.0</div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-base-200">
+          <p class="text-center text-xs text-gray-400">© 2024 Money Tracker</p>
         </div>
       </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 min-h-screen lg:ml-0">
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+          <slot />
+        </div>
+      </main>
     </div>
+
+    <!-- Toast Container -->
+    <Toast />
   </div>
 </template>
-
-<script setup lang="ts">
-import { Recycle, LayoutDashboard, Users, Tag, ArrowDownToLine, History, Menu } from 'lucide-vue-next'
-
-const route = useRoute()
-const mobileMenuOpen = ref(false)
-const { currentTheme, initTheme } = useTheme()
-
-onMounted(() => {
-  initTheme()
-})
-
-const navItems = [
-  { name: 'แดชบอร์ด', path: '/', icon: LayoutDashboard },
-  { name: 'จัดการสมาชิก', path: '/members', icon: Users },
-  { name: 'ตั้งราคาขยะ', path: '/prices', icon: Tag },
-  { name: 'รับฝากขยะ', path: '/deposit', icon: ArrowDownToLine },
-  { name: 'ประวัติธุรกรรม', path: '/history', icon: History },
-]
-
-const isActive = (path: string) => {
-  if (path === '/') return route.path === '/'
-  return route.path.startsWith(path)
-}
-</script>
