@@ -1,19 +1,23 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+  ],
   devtools: { enabled: true },
   compatibilityDate: "2024-04-03",
   app: {
     head: {
       htmlAttrs: {
-        "data-theme": "moneytracker",
+        "data-theme": "studentreg",
       },
-      title: "Money Tracker | รายรับ-รายจ่าย",
+      title: "Student Registration System | ระบบลงทะเบียนเรียน",
       meta: [
         {
           name: "description",
           content:
-            "ระบบบันทึกรายรับ-รายจ่ายส่วนบุคคล - Personal Expense Tracker",
+            "ระบบลงทะเบียนเรียนสำหรับนักศึกษา - Student Course Registration System",
         },
       ],
       link: [

@@ -1,47 +1,43 @@
-Act as a Senior Frontend Developer expert in Vue.js and Nuxt 3.
+Act as a Senior Front-end Developer specializing in Nuxt 3, Tailwind CSS, and TypeScript.
 
-I want you to build a **"Personal Expense Tracker"** application.
-The goal is to have a minimal, mobile-first web app to track income and expenses without a backend.
+**Task:** Create a functional prototype for a "Student Registration System" web application.
 
-### Tech Stack:
+**Tech Stack:**
 
-- **Framework:** Nuxt 3 (latest version).
-- **Styling:** Tailwind CSS v4 (use the new CSS-first configuration approach).
-- **UI Library:** DaisyUI (compatible with Tailwind 4).
-- **State Management:** Nuxt `useState` or standard Ref, synchronized with Browser `localStorage`.
-- **Icons:** Lucide-vue-next or Heroicons.
+- **Framework:** Nuxt 3 (Script Setup, TypeScript)
+- **Styling:** Tailwind CSS + DaisyUI
+- **State Management:** Pinia
+- **Data Persistence:** LocalStorage (Using `@pinia-plugin-persistedstate/nuxt`)
 
-### Core Features & Requirements:
+**Key Requirements:**
 
-1. **Data Structure:**
-   - Define a TypeScript interface `Transaction` containing: `id` (string/uuid), `title` (string), `amount` (number), `type` ('income' | 'expense'), and `date` (string/ISO).
+1.  **Configuration (`nuxt.config.ts`):**
 
-2. **State Management (Crucial):**
-   - Create a Composable named `useTransactions`.
-   - It must save/load data from `localStorage`.
-   - **Important:** Handle "Hydration Mismatch" correctly. Since `localStorage` is client-side only, ensure the data is only loaded on `onMounted` or use a pattern that prevents server-client DOM mismatch.
+    - Setup Tailwind CSS and DaisyUI.
+    - Setup Pinia and the PersistedState module to handle LocalStorage automatically.
 
-3. **UI Components (Single Page View):**
-   - **Dashboard Section:** - Show 3 Summary Cards: Total Balance, Total Income, Total Expense.
-     - Use distinct colors for Income (Green-ish) and Expense (Red-ish).
-   - **Add Transaction Form:**
-     - A simple form (or Modal) to add new items.
-     - Fields: Title, Amount, Type (Radio/Select), Date.
-   - **Transaction List:**
-     - Display a list of recent transactions.
-     - Each item should show the title, date, and amount (colored by type).
-     - Include a "Delete" button for each item.
+2.  **State Management (`stores/course.ts`):**
 
-4. **Design System:**
-   - Use DaisyUI components (Cards, Stats, Table/List, Inputs, Buttons).
-   - Theme: Use a clean theme like "lofi" or "cupcake" but support Dark mode if possible.
-   - Layout: specific for Mobile view but responsive for Desktop.
+    - **State:**
+      - `availableCourses`: Array of mock data (id, code, name, credit, professor, time).
+      - `myCourses`: Array of registered courses.
+    - **Actions:**
+      - `register(course)`: Add course to `myCourses`. Check for duplicates before adding. Check if total credits exceed 22.
+      - `drop(courseId)`: Remove course from `myCourses`.
+    - **Persistence:** Ensure `myCourses` is saved to LocalStorage automatically using `persist: true`.
 
-### Deliverables:
+3.  **UI/Pages:**
+    - **Layout (`layouts/default.vue`):** A responsive Navbar using DaisyUI. Include links to "Course Catalog" and "My Schedule". Show a badge on the "My Schedule" link indicating the number of enrolled courses.
+    - **Course Catalog (`pages/index.vue`):** Display courses in a grid using DaisyUI `Card`. Include a "Register" button (change to "Enrolled" and disable button if the user already has this course).
+    - **My Schedule (`pages/schedule.vue`):** Display enrolled courses in a DaisyUI `Table`. Show a summary of **Total Credits**. Include a "Withdraw" button (red color) for each row.
 
-- Please provide the project structure.
-- Provide the code for `nuxt.config.ts` (setup for Tailwind 4 & DaisyUI).
-- Provide the code for `composables/useTransactions.ts`.
-- Provide the code for `app.vue` or `pages/index.vue` assembling everything.
+**Deliverables:**
+Please provide the complete, ready-to-run code for:
 
-Start by explaining the setup for Tailwind CSS v4 with Nuxt as it differs from v3.
+1. `nuxt.config.ts`
+2. `stores/course.ts`
+3. `layouts/default.vue`
+4. `pages/index.vue`
+5. `pages/schedule.vue`
+
+Ensure the code is clean, modular, and uses the Composition API.

@@ -19,19 +19,19 @@ export default {
   daisyui: {
     themes: [
       {
-        moneytracker: {
-          'primary': '#059669',
+        studentreg: {
+          'primary': '#4f46e5',
           'primary-content': '#ffffff',
-          'secondary': '#0d9488',
+          'secondary': '#7c3aed',
           'secondary-content': '#ffffff',
-          'accent': '#10b981',
+          'accent': '#06b6d4',
           'accent-content': '#ffffff',
           'neutral': '#374151',
           'neutral-content': '#f3f4f6',
           'base-100': '#ffffff',
-          'base-200': '#f0fdf4',
-          'base-300': '#dcfce7',
-          'base-content': '#1f2937',
+          'base-200': '#f8fafc',
+          'base-300': '#e2e8f0',
+          'base-content': '#1e293b',
           'info': '#0ea5e9',
           'success': '#22c55e',
           'warning': '#f59e0b',
@@ -39,7 +39,6 @@ export default {
         },
       },
     ],
-    // Force light theme only - no dark mode
     darkTheme: false,
   },
 } satisfies Config
